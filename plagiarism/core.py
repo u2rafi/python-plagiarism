@@ -26,7 +26,7 @@ class Output(object):
             *,
             mapping: Optional[list],
             sorted: Optional[bool] = True,
-            nim_percentage: Optional[float] = 1
+            nim_percentage: Optional[float] = 1.0
     ) -> None:
         self.data = data
         self.map = mapping
@@ -45,15 +45,15 @@ class Output(object):
         """
         return sorted(d, key=lambda d: d['score'], reverse=reverse)
 
-    def getlist(self):
+    def getlist(self) -> List:
         """
         Get list of dictionary in a array
         :return:
         An array
         """
-        return self._sorting(self._generate_result()) if self.sorted else list(self._generate_result())
+        return list(self._sorting(self._generate_result()) if self.sorted else list(self._generate_result()))
 
-    def get(self):
+    def get(self) -> List:
         """
         Get an array of values if there are no mapping
         :return:
@@ -76,7 +76,7 @@ class Output(object):
         return self.getlist()
 
     def __iter__(self):
-        return list(self.getlist())
+        return self.getlist()
 
 
 class Plagiarism(object):
@@ -99,11 +99,11 @@ class Plagiarism(object):
         self.source = source
         self.nim_percentage = nim_percentage
 
-    def _cosine_similarity(self, x, y):
+    def _cosine_similarity(self, x, y) -> Any:
         """ Compute cosine similarity between samples in x and y. K(x, y) = <Xx, y> / (||x||*||y||) """
         return cosine_similarity(x, y)
 
-    def _get_source(self):
+    def _get_source(self) -> Union[Iterable, list]:
         return self.source.get_content()
 
     def _compare_transform(self, raw_document) -> Any:
@@ -111,7 +111,7 @@ class Plagiarism(object):
         return (tfidf * tfidf.T).A[0, 1]
 
     @staticmethod
-    def _get_input_content(f):
+    def _get_input_content(f: Union[bytes, TextIO]) -> str:
         if type(f) is bytes:
             return f.decode()
         return f.read()

@@ -9,7 +9,6 @@ BASE_DIR = pathlib.Path(__file__).parent.parent.resolve()
 
 
 class Source(object):
-
     """
     Base class for dataset as corpus data, source may include file, file stream or web url.
     Subclass must implement `validate()` and `get_content()` so `Plagiarism()` class can call them.
@@ -40,7 +39,6 @@ class Source(object):
 
 
 class TextSource(Source):
-
     """ Plain data source """
 
     def validate(self) -> bool:
@@ -49,6 +47,7 @@ class TextSource(Source):
         return True
 
     def get_content(self) -> List[str]:
+        self.validate()
         return [self.source]
 
 
@@ -67,16 +66,18 @@ class FileSource(Source):
         if pathlib.Path(self.source).exists():
             _, ext = os.path.splitext(self.source)
             with pathlib.Path(self.source).open() as fp:
-                if len(fp.read()) > 0:
+                if len(fp.read()) == 0:
                     raise ValueError('Empty file not allowed.')
+        else:
+            raise FileNotFoundError('File not found')
         return True
 
     def get_content(self) -> List[str]:
+        # self.validate()
         return [self._load_file(self.source)]
 
 
 class DataSetSource(Source):
-
     """ This source loads all text file from dataset directory """
 
     def validate(self) -> bool:
@@ -92,6 +93,7 @@ class DataSetSource(Source):
 
     def get_content(self) -> List[str]:
         """ load file contents of dataset """
+        # self.validate()
         dataset_dir: str = os.path.join(BASE_DIR, 'plagiarism/dataset')
         for ls in pathlib.Path(dataset_dir).iterdir():
             _, ext = os.path.splitext(ls)
@@ -101,6 +103,7 @@ class DataSetSource(Source):
 
 class WebPageSource(Source):
     """ Web page source to scrap page content """
+
     def __init__(self, source: Any):
         super(WebPageSource, self).__init__(source)
         self.source = source

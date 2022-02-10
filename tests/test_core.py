@@ -12,6 +12,7 @@ from plagiarism.sources import (
 
 BASE_DIR = pathlib.Path(__file__).parent.parent.resolve()
 
+
 class TestClass:
     def test_core_plagiarism(self):
         doc1 = os.path.join(BASE_DIR, 'plagiarism/dataset/africa_history.txt')
@@ -39,3 +40,18 @@ class TestClass:
         assert out._sorting(out._generate_result()) != None
         assert out.getlist() != None
         assert out.get() != None
+
+    def test_similarity_file_source(self):
+        doc1 = os.path.join(BASE_DIR, 'plagiarism/dataset/africa_history.txt')
+        result = Plagiarism(source=FileSource(doc1)).compare(open('test_input.txt').read()).getlist()
+        assert len(result) > 0
+
+    def test_similarity_text_source(self):
+        src = TextSource("the Big Bang singularity")
+        plg = Plagiarism(src).compare('the Big Bang singularity')
+        assert len(plg.getlist()) > 0
+
+    def test_similarity_webpage_source(self):
+        src = WebPageSource(source='https://en.wikipedia.org/wiki/Big_Bang')
+        plg = Plagiarism(src).compare('the Big Bang singularity')
+        assert len(plg.getlist()) > 0
