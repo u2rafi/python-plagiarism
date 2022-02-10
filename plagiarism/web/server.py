@@ -33,12 +33,12 @@ class IndexView(views.View):
             if kind == 'compare_documents':
                 doc1 = request.files.get('doc1')
                 doc2 = request.files.get('doc2')
-                result = Plagiarism(TextSource(doc1.stream.read().decode())).compare(doc2.stream.read()).get()
+                result = Plagiarism(TextSource(doc1.stream.read().decode())).compare(doc2.stream.read()).getlist()
 
             if kind == 'webpage':
                 link = request.form.get('link')
                 text = request.form.get('text')
-                result = Plagiarism(source=WebPageSource(link)).compare(text).get()
+                result = Plagiarism(source=WebPageSource(link)).compare(text).getlist()
 
             return json.dumps({'success': True, 'result': result})
         return render_template('index.html')

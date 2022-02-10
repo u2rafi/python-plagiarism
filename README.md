@@ -25,7 +25,7 @@ python setup.py install
 ```
 >>> from plagiarism.core import Plagiarism
 >>> plg = Plagiarism(source=...)
->>> plg.compare(...).getlist()
+>>> plg.compare(...).get()  # get percentage in number (float)
 ```
 
 ### Running web application
