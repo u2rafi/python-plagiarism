@@ -72,3 +72,8 @@ python3 -m pytest tests
 ```
 pytest --cov=plagiarism .
 ```
+
+# python-plagiarism app deployed in heroku
+A python-plagiarism app has been deployed in heroku docker and can be accessed using this link
+
+[https://python-plagiarism.herokuapp.com/](https://python-plagiarism.herokuapp.com/)
