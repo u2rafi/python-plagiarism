@@ -25,7 +25,10 @@ python setup.py install
 ```
 >>> from plagiarism.core import Plagiarism
 >>> plg = Plagiarism(source=...)
->>> plg.compare(...).get()  # get percentage in number (float)
+# get similarity percentage in number (float)
+>>> plg.compare(...).get() 
+# matching with dataset (multiple files)
+>>> plg.compare(...).getlist()  
 ```
 
 ### Running web application
