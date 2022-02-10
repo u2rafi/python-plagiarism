@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plagiarism Detection</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+          integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        body, textarea, input, button {
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        .file-drop-wrapper {
+            padding: 15px 50px;
+            border: 2px dashed lightgray;
+            border-radius: 5px;
+        }
+
+        .button-wrapper2 input {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            height: 10px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            border-radius: 20px;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            border-radius: 5px;
+            border: 1px solid #bfbfbf;
+            padding: 10px;
+        }
+
+        textarea:focus {
+            outline: none !important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#"><i class="fa-solid fa-check-double"></i> <strong>Plagiarism Detection</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://github.com/u2rafi/python-plagiarism"> <i
+                            class="fa-fw fa-brands fa-github"></i> GitHub <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="container pt-4">
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+               aria-controls="nav-home" aria-selected="true"> <i class="fa fa-file"></i> Input document</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+               aria-controls="nav-profile" aria-selected="false"> <i class="fa-solid fa-font"></i> Text content</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+               aria-controls="nav-contact" aria-selected="false"> <i class="fa-solid fa-copy"></i> Compare documents</a>
+            <a class="nav-item nav-link" id="nav-web-tab" data-toggle="tab" href="#webpage" role="tab"
+               aria-controls="nav-contact" aria-selected="false"> <i class="fa-solid fa-link"></i> Web page</a>
+
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="pt-4">
+                <form class="form" method="post" enctype="multipart/form-data" data-kind="single_file">
+                    <div class="form-group">
+                        <div class="file-drop-wrapper text-center">
+                            <h6 class="mb-2">Upload a text file with <code>.txt</code> extension.</h6>
+                            <div class="button-wrapper btn btn-default btn-xs">
+                                <span style="display: none;">Browse files</span>
+                                <input type="hidden" name="kind" value="single_file">
+                                <input required type="file" class="upload pkg-img " name="file" id="id_file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="flex-grow-1 align-items-center d-flex">
+                            <button type="submit" class="btn btn-primary btn-sm pl-4 pr-4"><i class="fa fa-check"></i>
+                                Detect plagiarism
+                            </button>
+                        </div>
+                        <div class="">
+                            Similarity percentage filter : <strong class="p-count">50</strong> %
+                            <input type="range" min="1" max="100" value="50" class="slider ml-4" id="range"
+                                   name="range">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="mt-4">
+                <form class="form" method="post" enctype="multipart/form-data" data-kind="text_input">
+                    <div class="form-group">
+                        <input type="hidden" name="kind" value="text_input">
+                        <textarea required name="text">Egyptology is usually embedded within larger departments that either focus on Archaeology, Near Eastern topics more broadly, or Classics.
+                                </textarea>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="flex-grow-1 align-items-center d-flex">
+                            <button type="submit" class="btn btn-primary btn-sm">Detect plagiarism</button>
+                        </div>
+                        <div class="">
+                            Similarity percentage filter : <strong class="p-count">10</strong> %
+                            <input type="range" min="1" max="100" value="10" class="slider ml-4" name="range">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            <div class="pt-4">
+
+                <form class="form" method="post" enctype="multipart/form-data" data-kind="compare_documents">
+                    <div class="form-group">
+                        <input type="hidden" name="kind" value="compare_documents">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Document one</span>
+                            </div>
+                            <div class="custom-file">
+                                <input required="" type="file" class="custom-file-input doc" id="inputGroupFile01"
+                                       name="doc1">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="kind" value="single_file">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Document two</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input doc" id="inputGroupFile02" name="doc2">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="flex-grow-1 align-items-center d-flex">
+                            <button type="submit" class="btn btn-primary btn-sm">Detect plagiarism</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="webpage" role="tabpanel" aria-labelledby="webpage">
+            <div class="mt-4">
+                <form class="form" method="post" enctype="multipart/form-data" data-kind="webpage">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-link"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Web page" name="link" value="https://en.wikipedia.org/wiki/Big_Bang">
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="kind" value="webpage">
+                        <textarea placeholder="Input text" required name="text">Egyptology is usually embedded within larger departments that either focus on Archaeology, Near Eastern topics more broadly, or Classics.
+                                </textarea>
+                    </div>
+                    <div class="form-group d-flex align-items-center">
+                        <div class="flex-grow-1 align-items-center d-flex">
+                            <button type="submit" class="btn btn-primary btn-sm">Detect plagiarism</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <ul class="list-group result">
+
+    </ul>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+<script>
+
+    $('span').on('click', function () {
+        // $('#id_file').trigger('click');
+    })
+
+    $(document).on('mousemove', '.slider', function () {
+        $('.p-count').text($(this).val());
+    })
+
+    let $alert = $(`<div class="alert alert-danger" role="alert"></div>`);
+    let $preloader = $('<div class="preloader">\n' +
+        '<div class="spinner-border spinner-border-sm ml-4" role="status">\n' +
+        '<span class="sr-only">Loading...</span>\n' +
+        '</div>\n' +
+        '<span>Processing ...</span>\n' +
+        '</div>')
+
+    const validateForm = ($form) => {
+        let kind = $form.data('kind');
+        switch (kind) {
+            case 'single_file':
+                if ($form.find('input[name=file]').get(0).files.length === 0) {
+                    $alert.text('Please select a .txt file containing text contents.').insertBefore($form);
+                }
+                break
+            case 'text_input':
+                if ($form.find('textarea[name=text]').val().trim() === '') {
+                    $alert.text('Please provide with the text content.').insertBefore($form);
+                }
+                break
+            case 'compare_documents':
+                if ($form.find('input[name=doc1]').get(0).files.length === 0 || $form.find('input[name=doc2]').get(0).files.length === 0) {
+                    $alert.text('Please select two .txt files containing text content').insertBefore($form);
+                }
+                break
+        }
+    }
+
+    $(document).on('submit', '.form', function () {
+        let $form = $(this);
+        let formdata = new FormData($(this).get(0));
+        let file = $('#id_file')[0].files;
+        let $res = $('.result');
+        let $button = $form.find('button');
+        validateForm($form)
+        // Check file selected or not
+        //if (file.length > 0) {
+
+        if (formdata) {
+            formdata.append('file', file[0]);
+            $res.children().remove();
+            $preloader.insertAfter($button);
+            $.ajax({
+                url: '',
+                type: 'post',
+                data: formdata,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response)
+                    $preloader.remove();
+                    if (response.success) {
+                        response.result.forEach(function (item) {
+                            console.log(item)
+                            let $li = $(`<li class="list-group-item"><strong>${item.score} %</strong> similarity in document <code>${item.doc || ''}</code></li>`)
+                            $('.result').append($li)
+                        })
+                    }
+                },
+            });
+        } else {
+            alert("Please select a file.");
+        }
+
+        return false;
+    })
+
+    $(document).on('change', '.doc', function () {
+        console.log($(this).get(0).files[0].name)
+        console.log($(this).val())
+        $(this).parent().find('label').text($(this).get(0).files[0].name)
+    });
+
+
+</script>
+</body>
+</html>

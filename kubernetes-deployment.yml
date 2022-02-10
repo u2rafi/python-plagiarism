@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: plagiarism
+spec:
+  type: NodePort
+  selector:
+    app: plagiarism
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: plagiarism # has to match .spec.template.metadata.labels
+  serviceName: "plagiarism"
+  replicas: 3 # by default is 1
+  template:
+    metadata:
+      labels:
+        app: plagiarism # has to match .spec.selector.matchLabels
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: plagiarism
+          image: u2rafi/plagiarism:latest
+          env:
+          - name: BUILD_NUMBER
+            value: 1
+          command: ["/bin/sh"]
+          args: ["-c", "python -m plagiarism.cli runserver -h 0.0.0.0 -p 5000"]
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+              name: web

@@ -1,0 +1,5 @@
+scikit-learn
+flask
+click
+beautifulsoup4
+pytest-cov

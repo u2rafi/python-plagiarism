@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+      build: .
+      restart: always
+      volumes:
+      - .:/code
+      ports:
+        - 5000:5000
+      expose:
+        - 5000
+      command: bash -c "python -m plagiarism.cli runserver -h 0.0.0.0 -p 5000"
