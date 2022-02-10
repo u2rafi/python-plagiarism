@@ -17,9 +17,9 @@ if __name__ == '__main__':
     tp = TextSource(source='ancient Egyptians')
     # print(Plagiarism(content=DataSetProvider('plagiarism/dataset')).compare('ancient Egyptians').getlist())
     # print(Plagiarism(content=DataSetProvider('plagiarism/dataset')).compare(doc2))
-    print(Plagiarism(DataSetSource('plagiarism/dataset')).compare(open(doc2).read()).getlist())
+    print(Plagiarism(DataSetSource('plagiarism/dataset')).compare(open(doc2).read()).get())
     # print(Plagiarism(content=InputFileProvider(doc5)).compare('ancient Egyptians'))
     print(Plagiarism(source=FileSource(doc1)).compare(open(doc2).read()).get())
     # print(Plagiarism(content=WebPageProvider(source='https://en.wikipedia.org/wiki/History_of_religion')).compare(
     #     'History of religion'))
-    print(Plagiarism(WebPageSource(source='https://en.wikipedia.org/wiki/Big_Bang')).compare(doc4))
+    # print(Plagiarism(WebPageSource(source='https://en.wikipedia.org/wiki/Big_Bang')).compare(doc4))

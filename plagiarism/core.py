@@ -53,13 +53,16 @@ class Output(object):
         """
         return list(self._sorting(self._generate_result()) if self.sorted else list(self._generate_result()))
 
-    def get(self) -> List:
+    def get(self) -> float:
         """
         Get an array of values if there are no mapping
         :return:
         An array
         """
-        return [dict(score="{:.2f}".format(item[0] * 100)) for item in self.data]
+
+        result = [item[0] * 100 for item in self.data]
+        result.sort(reverse=True)
+        return result[0]
 
     def _generate_result(self) -> Iterable:
         """ Generator that convert ndarray for an array of dictionary """
@@ -86,6 +89,7 @@ class Plagiarism(object):
     source: `Source` instance having file or file content
 
     >>> plg = Plagiarism(source=...)
+    >>> plg.compare(...).get() # get percentage in number (float)
     >>> plg.compare(...).getlist()
     """
 
