@@ -209,7 +209,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-link"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Web page" name="link" value="https://en.wikipedia.org/wiki/Big_Bang">
+                        <input type="text" class="form-control" placeholder="Web page" name="link"
+                               value="https://en.wikipedia.org/wiki/Big_Bang">
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="kind" value="webpage">
@@ -260,7 +261,7 @@
         switch (kind) {
             case 'single_file':
                 let doc = $form.find('input[name=file]').get(0).files[0];
-                if (!fileExtensionValidate(doc.name)){
+                if (!fileExtensionValidate(doc.name)) {
                     $alert.text('Please select .txt files containing text content').insertBefore($form);
                     valid = false;
                 }
@@ -278,7 +279,7 @@
             case 'compare_documents':
                 let doc1 = $form.find('input[name=doc1]').get(0).files[0];
                 let doc2 = $form.find('input[name=doc2]').get(0).files[0];
-                if (!fileExtensionValidate(doc1.name) || !fileExtensionValidate(doc2.name)){
+                if (!fileExtensionValidate(doc1.name) || !fileExtensionValidate(doc2.name)) {
                     $alert.text('Please select two .txt files containing text content').insertBefore($form);
                     valid = false;
                 }
@@ -302,7 +303,7 @@
         let file = $('#id_file')[0].files;
         let $res = $('.result');
         let $button = $form.find('button');
-        if (validateForm($form) === false){
+        if (validateForm($form) === false) {
             return false;
         }
         // Check file selected or not
@@ -325,11 +326,17 @@
                     console.log(response)
                     $preloader.remove();
                     if (response.success) {
-                        response.result.forEach(function (item) {
-                            console.log(item)
-                            let $li = $(`<li class="list-group-item"><strong>${item.score} %</strong> similarity in document <code>${item.doc || ''}</code></li>`)
-                            $('.result').append($li)
-                        })
+                        if (response.result.length > 0) {
+                            response.result.forEach(function (item) {
+                                console.log(item)
+                                let $li = $(`<li class="list-group-item"><strong>${item.score} %</strong> similarity in document <code>${item.doc || ''}</code></li>`)
+                                $('.result').append($li);
+                            })
+                        } else {
+                            let $li = $(`<li class="list-group-item">No similarity found.</li>`)
+                            $('.result').append($li);
+                        }
+
                     }
                 },
             });
