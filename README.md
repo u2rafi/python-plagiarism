@@ -24,11 +24,13 @@ python setup.py install
 #### Using plagiarism as a package
 ```
 >>> from plagiarism.core import Plagiarism
->>> plg = Plagiarism(source=...)
+>>> from plagiarism.source import DataSetSource
+>>> src = DataSetSource('plagiarism/dataset')
+>>> plg = Plagiarism(source=src)
 # get similarity percentage in number (float)
->>> plg.compare(...).get() 
+>>> plg.compare('Big bang').get() 
 # matching with dataset (multiple files)
->>> plg.compare(...).getlist()  
+>>> plg.compare('Big bang').getlist()  
 ```
 
 ### Running web application
