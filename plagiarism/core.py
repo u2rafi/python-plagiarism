@@ -43,7 +43,7 @@ class Output(object):
         :return:
         a sorted array
         """
-        return sorted(d, key=lambda d: d['score'], reverse=reverse)
+        return sorted(d, key=lambda x: x['score'], reverse=reverse)
 
     def getlist(self) -> List:
         """
